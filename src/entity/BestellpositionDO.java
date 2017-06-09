@@ -17,10 +17,12 @@ import java.io.Serializable;
  */
 
 @Entity
+@IdClass(bestellpositionPK.class)
 @Table(name="Bestellpositionen")
 public class BestellpositionDO implements Serializable, Bestellposition {
     
-    //TODO: PRIMARY KEY KLASSE ANLEGEN UND IMPLEMENTIEREN
+    @EmbeddedId
+    private bestellpositionPK positionPK;
     private int anzahl;
     @ManyToOne
     private ArtikelDO artikel;
