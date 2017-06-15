@@ -13,11 +13,14 @@ import edu.whs.dvi.aufgabe1.entities.Kategorie;
 import edu.whs.dvi.aufgabe1.entities.Kunde;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
+import entity.KategorieDO;
 
 /**
  *
@@ -81,8 +84,56 @@ public class DAOimpl implements DataAccessObject{
     }
 
     @Override
-    public Collection<Kategorie> getAllKategorie(Kategorie ktgr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<KategorieDO> getAllKategorie(Kategorie ktgr) {
+        ArrayList<KategorieDO> al = new ArrayList<>();
+        
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM KATEGORIEN");
+
+            while (rs.next()) {
+                al.add(new KategorieDO(rs.getString(2), rs.getInt(1), rs.getInt(4), rs.getString(3)));
+            }
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            rollback();
+        }
+
+        for (Kategorie kats : al) {
+
+            switch (kats.getKategorieNr()) {
+                case 1:
+                    for (Kategorie kats2 : al) {
+                        if (kats2.getElternKat() == kats.getKategorieNr()) {
+                            kats.addUnterkategorie(kats2);
+                        }
+
+                    }
+                    break;
+
+                case 2:
+                    for (Kategorie kats2 : al) {
+                        if (kats2.getElternKat() == kats.getKategorieNr()) {
+                            kats.addUnterkategorie(kats2);
+                        }
+                    }
+                    break;
+
+                case 3:
+                    for (Kategorie kats2 : al) {
+                        if (kats2.getElternKat() == kats.getKategorieNr()) {
+                            kats.addUnterkategorie(kats2);
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return al;
     }
 
     @Override

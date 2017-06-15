@@ -24,8 +24,20 @@ public class KategorieDO implements Serializable, Kategorie {
     private int katID;
     private Collection<Artikel> artikel;
     private String name;
-    @OneToOne
+    @ManyToOne
     private Kategorie oberkategorie;
+
+    public KategorieDO(int katID, Collection<Artikel> artikel, String name, Kategorie oberkategorie) {
+        this.katID = katID;
+        this.artikel = artikel;
+        this.name = name;
+        this.oberkategorie = oberkategorie;
+    }
+
+    public KategorieDO() {
+    }
+    
+    
 
     public void setArtikel(Collection<Artikel> artikel) {
         this.artikel = artikel;
